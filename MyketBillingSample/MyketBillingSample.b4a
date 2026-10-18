@@ -1,0 +1,480 @@
+﻿Build1=Default,com.example.android.trivialdrivesample
+File1=buy_gas.png
+File10=icon.png
+File11=infinite_gas.png
+File12=premium.png
+File13=title.png
+File14=upgrade_app.png
+File15=wait.png
+File2=drive.png
+File3=free.png
+File4=gas_inf.png
+File5=gas0.png
+File6=gas1.png
+File7=gas2.png
+File8=gas3.png
+File9=gas4.png
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup12=Default Group
+FileGroup13=Default Group
+FileGroup14=Default Group
+FileGroup15=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+FileGroup9=Default Group
+Group=Default Group
+Library1=core
+Library2=myketbilling
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="36"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~~\n~SetApplicationAttribute(android:theme, "@android:style/Theme.Light.NoTitleBar")~\n~'End of default text.~\n~~\n~CreateResourceFromFile(Macro, MyketBilling.MyketBillingReceiver)
+Module1=Starter
+NumberOfFiles=15
+NumberOfLibraries=2
+NumberOfModules=1
+Version=14
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: TrivialDrive Sample
+	#VersionCode: 1
+	#VersionName: 1.0.0
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: portrait
+	#CanInstallToExternalStorage: False
+
+	#AdditionalJar: androidx.core:core
+	#AdditionalJar: androidx.browser:browser
+	#AdditionalJar: org.jetbrains.kotlin-kotlin-stdlib
+    #AdditionalJar: org.jetbrains.kotlinx-kotlinx-coroutines-core-jvm
+    #AdditionalJar: org.jetbrains.kotlinx-kotlinx-coroutines-android
+    #AdditionalJar: okhttp-4.9.0
+    #AdditionalJar: okio-2.8.0
+    #AdditionalJar: gson-2.8.5
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: False
+#End Region
+
+Sub Process_Globals
+	' SKUs for products: consumable gas, non-consumable premium upgrade, subscription infinite gas
+	Private Const SKU_GAS As String = "gas"
+	Private Const SKU_PREMIUM As String = "premium"
+	Private Const SKU_INFINITE_GAS As String = "infinite_gas"
+	
+	' Maximum units of gas the tank holds (each unit represents 1/4 tank)
+	Private Const TANK_MAX As Int = 4
+	
+	' Public key for Myket In-App Billing signature verification
+	Private Const IAB_PUBLIC_KEY As String = "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgOW5KR56WBWCb5K+yyVDnh/7op0FY4zmM93CWz3xFhgUJe2WXM/8MgpTHiDxrj2Mkgt9bg30qZDtT8gzDHiTgNv6G7pZBDWuyKEariGbbQgoCoeaq3GBcNsQf418jsvOfPjzZ7Rpcl/+9ZPsp1kbJVOmZxnwAZx/wnkUduwfuf8hAgMBAAE="
+End Sub
+
+Sub Globals
+	' The helper object for Myket In-App Billing
+	Private mHelper As MyketIabHelper
+	
+	' Game state variables
+	Private mIsPremium As Boolean = False
+	Private mSubscribedToInfiniteGas As Boolean = False
+	Private mTank As Int = 2
+	
+	' UI Views
+	Private imgTitle As ImageView
+	Private imgCar As ImageView
+	Private imgGasGauge As ImageView
+	Private btnDrive As ImageView
+	Private btnBuyGas As ImageView
+	Private btnUpgrade As ImageView
+	Private btnInfiniteGas As ImageView
+	Private lblStatus As Label
+	Private pnlWait As Panel
+	Private imgWait As ImageView
+	Private lblWaitMsg As Label
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	' Load saved game state
+	LoadData
+	
+	' Build the sample UI programmatically
+	BuildUserInterface
+	
+	' Update UI to match loaded state
+	UpdateUi
+	
+	' Create and initialize the IAB helper object
+	Log("Creating Myket IAB helper.")
+	mHelper.Initialize("IabHelper", IAB_PUBLIC_KEY)
+	
+	' Enable debug logging (set to False for production release)
+	mHelper.EnableDebugLogging(True)
+	
+	' Show wait screen while setting up billing service
+	SetWaitScreen(True)
+	lblStatus.Text = "Status: Connecting to Myket billing service..."
+	
+	' Start setup process asynchronously
+	Log("Starting setup.")
+	mHelper.StartSetup
+End Sub
+
+Sub Activity_Resume
+	UpdateUi
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	' Dispose helper if user closed the activity to prevent service connection leaks
+	If UserClosed Then
+		Log("User closed activity; disposing IAB helper.")
+		If mHelper.IsInitialized Then
+			mHelper.Dispose
+		End If
+	End If
+End Sub
+
+#Region UI Construction
+Private Sub BuildUserInterface
+	Activity.Color = Colors.RGB(245, 245, 245)
+	
+	' Title banner
+	imgTitle.Initialize("")
+	imgTitle.Bitmap = LoadBitmap(File.DirAssets, "title.png")
+	imgTitle.Gravity = Gravity.FILL
+	Activity.AddView(imgTitle, (100%x - 260dip) / 2, 20dip, 260dip, 50dip)
+	
+	' Car image (free blue car or premium red car)
+	imgCar.Initialize("")
+	imgCar.Bitmap = LoadBitmap(File.DirAssets, "free.png")
+	imgCar.Gravity = Gravity.FILL
+	Activity.AddView(imgCar, (100%x - 130dip) / 2, 85dip, 130dip, 75dip)
+	
+	' Gas gauge
+	imgGasGauge.Initialize("")
+	imgGasGauge.Bitmap = LoadBitmap(File.DirAssets, "gas2.png")
+	imgGasGauge.Gravity = Gravity.FILL
+	Activity.AddView(imgGasGauge, (100%x - 140dip) / 2, 175dip, 140dip, 65dip)
+	
+	' Action buttons row (Drive, Buy Gas)
+	btnDrive.Initialize("btnDrive")
+	btnDrive.Bitmap = LoadBitmap(File.DirAssets, "drive.png")
+	btnDrive.Gravity = Gravity.FILL
+	Activity.AddView(btnDrive, 50%x - 135dip, 255dip, 125dip, 46dip)
+	
+	btnBuyGas.Initialize("btnBuyGas")
+	btnBuyGas.Bitmap = LoadBitmap(File.DirAssets, "buy_gas.png")
+	btnBuyGas.Gravity = Gravity.FILL
+	Activity.AddView(btnBuyGas, 50%x + 10dip, 255dip, 125dip, 46dip)
+	
+	' Upgrade buttons row (Upgrade to Premium, Infinite Gas)
+	btnUpgrade.Initialize("btnUpgrade")
+	btnUpgrade.Bitmap = LoadBitmap(File.DirAssets, "upgrade_app.png")
+	btnUpgrade.Gravity = Gravity.FILL
+	Activity.AddView(btnUpgrade, 50%x - 135dip, 315dip, 125dip, 46dip)
+	
+	btnInfiniteGas.Initialize("btnInfiniteGas")
+	btnInfiniteGas.Bitmap = LoadBitmap(File.DirAssets, "infinite_gas.png")
+	btnInfiniteGas.Gravity = Gravity.FILL
+	Activity.AddView(btnInfiniteGas, 50%x + 10dip, 315dip, 125dip, 46dip)
+	
+	' Status Label
+	lblStatus.Initialize("")
+	lblStatus.TextColor = Colors.DarkGray
+	lblStatus.TextSize = 13
+	lblStatus.Gravity = Gravity.CENTER_HORIZONTAL
+	lblStatus.Text = "Status: Initializing..."
+	Activity.AddView(lblStatus, 5%x, 375dip, 90%x, 60dip)
+	
+	' Wait Overlay Screen
+	pnlWait.Initialize("")
+	pnlWait.Color = Colors.ARGB(210, 255, 255, 255)
+	pnlWait.Visible = False
+	Activity.AddView(pnlWait, 0, 0, 100%x, 100%y)
+	
+	imgWait.Initialize("")
+	imgWait.Bitmap = LoadBitmap(File.DirAssets, "wait.png")
+	imgWait.Gravity = Gravity.FILL
+	pnlWait.AddView(imgWait, (100%x - 100dip) / 2, (100%y - 100dip) / 2 - 20dip, 100dip, 100dip)
+	
+	lblWaitMsg.Initialize("")
+	lblWaitMsg.TextColor = Colors.RGB(30, 30, 30)
+	lblWaitMsg.TextSize = 15
+	lblWaitMsg.Gravity = Gravity.CENTER
+	lblWaitMsg.Text = "Please wait..."
+	pnlWait.AddView(lblWaitMsg, 10%x, (100%y - 100dip) / 2 + 90dip, 80%x, 40dip)
+End Sub
+#End Region
+
+#Region UI Update & Helper
+Private Sub UpdateUi
+	' Update car graphic based on premium ownership
+	If mIsPremium Then
+		imgCar.Bitmap = LoadBitmap(File.DirAssets, "premium.png")
+		btnUpgrade.Visible = False
+	Else
+		imgCar.Bitmap = LoadBitmap(File.DirAssets, "free.png")
+		btnUpgrade.Visible = True
+	End If
+	
+	' Update infinite gas button visibility
+	If mSubscribedToInfiniteGas Then
+		btnInfiniteGas.Visible = False
+		imgGasGauge.Bitmap = LoadBitmap(File.DirAssets, "gas_inf.png")
+	Else
+		btnInfiniteGas.Visible = True
+		Dim gaugeName As String = "gas" & Min(Max(mTank, 0), 4) & ".png"
+		imgGasGauge.Bitmap = LoadBitmap(File.DirAssets, gaugeName)
+	End If
+End Sub
+
+Private Sub SetWaitScreen(Waiting As Boolean)
+	pnlWait.Visible = Waiting
+	pnlWait.BringToFront
+End Sub
+
+Private Sub Alert(Title As String, Message As String)
+	Log("Alert: " & Message)
+	MsgboxAsync(Message, Title)
+End Sub
+
+Private Sub Complain(Message As String)
+	LogColor("Complain: " & Message, Colors.Red)
+	MsgboxAsync(Message, "Error")
+End Sub
+#End Region
+
+#Region Billing Events
+' Callback when IAB helper setup finishes
+Private Sub IabHelper_SetupFinished (Result As MyketIabResult)
+	Log("Setup finished. Result: " & Result)
+	
+	If Not(Result.Success) Then
+		SetWaitScreen(False)
+		lblStatus.Text = "Status: Setup failed (" & Result.Message & ")"
+		Complain("Problem setting up in-app billing: " & Result.Message)
+		Return
+	End If
+	
+	' Check if helper was disposed in the meantime
+	If Not(mHelper.IsInitialized) Then Return
+	
+	Log("Setup successful. Querying inventory.")
+	lblStatus.Text = "Status: Connected. Querying inventory..."
+	
+	' Query inventory of owned items and SKU details
+	Dim skuList As List
+	skuList.Initialize
+	skuList.Add(SKU_GAS)
+	skuList.Add(SKU_PREMIUM)
+	skuList.Add(SKU_INFINITE_GAS)
+	
+	mHelper.QueryInventoryAsync3(True, skuList)
+End Sub
+
+' Callback when inventory query completes
+Private Sub IabHelper_QueryInventoryFinished (Result As MyketIabResult, Inventory As MyketInventory)
+	Log("Query inventory finished. Result: " & Result)
+	SetWaitScreen(False)
+	
+	If Not(mHelper.IsInitialized) Then Return
+	
+	If Not(Result.Success) Then
+		lblStatus.Text = "Status: Query inventory failed"
+		Complain("Failed to query inventory: " & Result.Message)
+		Return
+	End If
+	
+	Log("Query inventory successful.")
+	lblStatus.Text = "Status: Ready"
+	
+	' Check for premium upgrade
+	mIsPremium = Inventory.HasPurchase(SKU_PREMIUM)
+	Log("User is " & IIf(mIsPremium, "PREMIUM", "NOT PREMIUM"))
+	
+	' Check for infinite gas subscription
+	mSubscribedToInfiniteGas = Inventory.HasPurchase(SKU_INFINITE_GAS)
+	If mSubscribedToInfiniteGas Then mTank = TANK_MAX
+	Log("User " & IIf(mSubscribedToInfiniteGas, "HAS", "DOES NOT HAVE") & " infinite gas subscription.")
+	
+	' Check for gas delivery: if user owns unconsumed gas, consume it immediately
+	If Inventory.HasPurchase(SKU_GAS) Then
+		Log("We have unconsumed gas. Consuming it now.")
+		SetWaitScreen(True)
+		lblStatus.Text = "Status: Delivering gas..."
+		Dim gasPurchase As MyketPurchase = Inventory.GetPurchase(SKU_GAS)
+		mHelper.ConsumeAsync(gasPurchase)
+		Return
+	End If
+	
+	UpdateUi
+End Sub
+
+' Callback when a purchase flow completes
+Private Sub IabHelper_PurchaseFinished (Result As MyketIabResult, Purchase As MyketPurchase)
+	Log("Purchase finished: " & Result)
+	
+	If Not(mHelper.IsInitialized) Then Return
+	
+	If Not(Result.Success) Then
+		SetWaitScreen(False)
+		If Result.Response <> mHelper.BILLING_RESPONSE_RESULT_USER_CANCELED Then
+			Complain("Error purchasing: " & Result.Message)
+		Else
+			Log("User canceled purchase.")
+		End If
+		Return
+	End If
+	
+	Log("Purchase successful: " & Purchase.Sku)
+	
+	If Purchase.Sku = SKU_GAS Then
+		' Bought gas: start consumption flow to add it to user's tank
+		Log("Purchase is gas. Consuming it.")
+		lblStatus.Text = "Status: Consuming gas..."
+		mHelper.ConsumeAsync(Purchase)
+		
+	Else If Purchase.Sku = SKU_PREMIUM Then
+		' Bought the premium upgrade
+		Log("Purchase is premium upgrade.")
+		mIsPremium = True
+		SaveData
+		UpdateUi
+		SetWaitScreen(False)
+		lblStatus.Text = "Status: Upgraded to Premium!"
+		Alert("Thank You!", "Thank you for upgrading to premium!")
+		
+	Else If Purchase.Sku = SKU_INFINITE_GAS Then
+		' Bought infinite gas subscription
+		Log("Infinite gas subscription purchased.")
+		mSubscribedToInfiniteGas = True
+		mTank = TANK_MAX
+		SaveData
+		UpdateUi
+		SetWaitScreen(False)
+		lblStatus.Text = "Status: Subscribed to Infinite Gas!"
+		Alert("Thank You!", "Thank you for subscribing to infinite gas!")
+	End If
+End Sub
+
+' Callback when consumption finishes
+Private Sub IabHelper_ConsumeFinished (Purchase As MyketPurchase, Result As MyketIabResult)
+	Log("Consumption finished. Result: " & Result)
+	SetWaitScreen(False)
+	
+	If Not(mHelper.IsInitialized) Then Return
+	
+	If Result.Success Then
+		' Provision the consumable item into the game world
+		Log("Consumption successful. Provisioning 1/4 tank of gas.")
+		If mTank < TANK_MAX Then
+			mTank = mTank + 1
+		End If
+		SaveData
+		UpdateUi
+		lblStatus.Text = "Status: Gas tank filled (+1/4)!"
+		Alert("Gas Refilled", "You filled 1/4 tank! Your tank is now " & mTank & "/4 full.")
+	Else
+		Complain("Error while consuming item: " & Result.Message)
+	End If
+End Sub
+#End Region
+
+#Region User Actions (Button Clicks)
+' User clicked "Drive" button
+Private Sub btnDrive_Click
+	Log("Drive button clicked.")
+	
+	If Not(mSubscribedToInfiniteGas) And mTank <= 0 Then
+		Alert("Out of Gas", "Oh no! You are out of gas! Try buying some gas.")
+	Else
+		If Not(mSubscribedToInfiniteGas) Then
+			mTank = mTank - 1
+			SaveData
+		End If
+		Alert("Vroooom!", "Vroooom! You drove a few miles.")
+		UpdateUi
+	End If
+End Sub
+
+' User clicked "Buy Gas" button
+Private Sub btnBuyGas_Click
+	Log("Buy gas button clicked.")
+	
+	If mSubscribedToInfiniteGas Then
+		Alert("Infinite Gas", "No need! You are subscribed to infinite gas. Isn't that awesome?")
+		Return
+	End If
+	
+	If mTank >= TANK_MAX Then
+		Alert("Tank Full", "Your tank is full! Drive around a bit before refilling.")
+		Return
+	End If
+	
+	SetWaitScreen(True)
+	lblStatus.Text = "Status: Opening purchase screen..."
+	Log("Launching purchase flow for gas.")
+	
+	Dim payload As String = "sample_payload_" & DateTime.Now
+	mHelper.LaunchPurchaseFlow(SKU_GAS, payload)
+End Sub
+
+' User clicked "Upgrade to Premium" button
+Private Sub btnUpgrade_Click
+	Log("Upgrade button clicked.")
+	SetWaitScreen(True)
+	lblStatus.Text = "Status: Opening purchase screen..."
+	
+	Dim payload As String = "sample_payload_" & DateTime.Now
+	mHelper.LaunchPurchaseFlow(SKU_PREMIUM, payload)
+End Sub
+
+' User clicked "Infinite Gas" button
+Private Sub btnInfiniteGas_Click
+	Log("Infinite gas button clicked.")
+	
+	If Not(mHelper.SubscriptionsSupported) Then
+		Complain("Subscriptions are not supported on your device yet.")
+		Return
+	End If
+	
+	SetWaitScreen(True)
+	lblStatus.Text = "Status: Opening subscription screen..."
+	
+	Dim payload As String = "sample_payload_" & DateTime.Now
+	mHelper.LaunchSubscriptionPurchaseFlow(SKU_INFINITE_GAS, payload)
+End Sub
+#End Region
+
+#Region Data Persistence
+Private Sub SaveData
+	Dim data As String = mTank & "," & IIf(mIsPremium, "1", "0")
+	File.WriteString(File.DirInternal, "game_data.txt", data)
+	Log("Saved game data: tank=" & mTank & ", isPremium=" & mIsPremium)
+End Sub
+
+Private Sub LoadData
+	If File.Exists(File.DirInternal, "game_data.txt") Then
+		Try
+			Dim data As String = File.ReadString(File.DirInternal, "game_data.txt")
+			Dim parts() As String = Regex.Split(",", data)
+			If parts.Length >= 2 Then
+				mTank = parts(0)
+				mIsPremium = (parts(1) = "1")
+			End If
+		Catch
+			Log("Could not parse game_data.txt: " & LastException.Message)
+			mTank = 2
+			mIsPremium = False
+		End Try
+	Else
+		mTank = 2
+		mIsPremium = False
+	End If
+	Log("Loaded game data: tank=" & mTank & ", isPremium=" & mIsPremium)
+End Sub
+#End Region

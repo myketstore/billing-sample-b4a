@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<doclet-version-NOT-library-version>1.07</doclet-version-NOT-library-version>
+	<class>
+		<name>ir.myket.billingclient.b4a.MyketIabResult</name>
+		<shortname>MyketIabResult</shortname>
+		<objectwrapper>ir.myket.billingclient.util.IabResult</objectwrapper>
+		<owner>process</owner>
+		<method>
+			<name>IsInitialized</name>
+			<comment></comment>
+			<returntype>boolean</returntype>
+		</method>
+		<method>
+			<name>Initialize</name>
+			<comment>Initializes the result object.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>result</name>
+				<type>ir.myket.billingclient.util.IabResult</type>
+			</parameter>
+		</method>
+		<property>
+			<name>Response</name>
+			<returntype>int</returntype>
+			<comment>Numeric response code (0 = OK).</comment>
+		</property>
+		<property>
+			<name>Message</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Human-readable error or success message.</comment>
+		</property>
+		<property>
+			<name>Success</name>
+			<returntype>boolean</returntype>
+			<comment>True if the operation succeeded.</comment>
+		</property>
+		<property>
+			<name>IsSuccess</name>
+			<returntype>boolean</returntype>
+			<comment>True if the operation succeeded.</comment>
+		</property>
+		<property>
+			<name>Failure</name>
+			<returntype>boolean</returntype>
+			<comment>True if the operation failed.</comment>
+		</property>
+		<property>
+			<name>IsFailure</name>
+			<returntype>boolean</returntype>
+			<comment>True if the operation failed.</comment>
+		</property>
+	</class>
+	<class>
+		<name>ir.myket.billingclient.b4a.MyketPurchase</name>
+		<shortname>MyketPurchase</shortname>
+		<objectwrapper>ir.myket.billingclient.util.Purchase</objectwrapper>
+		<owner>process</owner>
+		<method>
+			<name>IsInitialized</name>
+			<comment></comment>
+			<returntype>boolean</returntype>
+		</method>
+		<method>
+			<name>Initialize</name>
+			<comment>Initializes the purchase object.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>purchase</name>
+				<type>ir.myket.billingclient.util.Purchase</type>
+			</parameter>
+		</method>
+		<property>
+			<name>ItemType</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Item type: "inapp" or "subs".</comment>
+		</property>
+		<property>
+			<name>OrderId</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Unique order ID for the transaction.</comment>
+		</property>
+		<property>
+			<name>PackageName</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Application package name.</comment>
+		</property>
+		<property>
+			<name>Sku</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Product SKU identifier.</comment>
+		</property>
+		<property>
+			<name>PurchaseTime</name>
+			<returntype>long</returntype>
+			<comment>Time of purchase in milliseconds since epoch.</comment>
+		</property>
+		<property>
+			<name>PurchaseState</name>
+			<returntype>int</returntype>
+			<comment>0 = purchased, 1 = canceled, 2 = refunded.</comment>
+		</property>
+		<property>
+			<name>DeveloperPayload</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Developer-specified payload string.</comment>
+		</property>
+		<property>
+			<name>Token</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Token uniquely identifying the purchase.</comment>
+		</property>
+		<property>
+			<name>OriginalJson</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Raw JSON string received from billing service.</comment>
+		</property>
+		<property>
+			<name>Signature</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Digital signature for verifying the purchase data.</comment>
+		</property>
+	</class>
+	<class>
+		<name>ir.myket.billingclient.b4a.MyketSkuDetails</name>
+		<shortname>MyketSkuDetails</shortname>
+		<objectwrapper>ir.myket.billingclient.util.SkuDetails</objectwrapper>
+		<owner>process</owner>
+		<method>
+			<name>IsInitialized</name>
+			<comment></comment>
+			<returntype>boolean</returntype>
+		</method>
+		<method>
+			<name>Initialize</name>
+			<comment>Initializes SKU details.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>skuDetails</name>
+				<type>ir.myket.billingclient.util.SkuDetails</type>
+			</parameter>
+		</method>
+		<property>
+			<name>Sku</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Product SKU identifier.</comment>
+		</property>
+		<property>
+			<name>Type</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Product type: "inapp" or "subs".</comment>
+		</property>
+		<property>
+			<name>Price</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Formatted price string.</comment>
+		</property>
+		<property>
+			<name>Title</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Product title.</comment>
+		</property>
+		<property>
+			<name>Description</name>
+			<returntype>java.lang.String</returntype>
+			<comment>Product description.</comment>
+		</property>
+	</class>
+	<class>
+		<name>ir.myket.billingclient.b4a.MyketInventory</name>
+		<shortname>MyketInventory</shortname>
+		<objectwrapper>ir.myket.billingclient.util.Inventory</objectwrapper>
+		<owner>process</owner>
+		<method>
+			<name>IsInitialized</name>
+			<comment></comment>
+			<returntype>boolean</returntype>
+		</method>
+		<method>
+			<name>Initialize</name>
+			<comment>Initializes the inventory.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>inventory</name>
+				<type>ir.myket.billingclient.util.Inventory</type>
+			</parameter>
+		</method>
+		<method>
+			<name>GetSkuDetails</name>
+			<comment>Returns SKU catalog details for the given product SKU.</comment>
+			<returntype>ir.myket.billingclient.b4a.MyketSkuDetails</returntype>
+			<parameter>
+				<name>sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>GetPurchase</name>
+			<comment>Returns purchase information for the given product SKU, or Null if not owned.</comment>
+			<returntype>ir.myket.billingclient.b4a.MyketPurchase</returntype>
+			<parameter>
+				<name>sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>HasPurchase</name>
+			<comment>Returns True if the given product SKU is owned.</comment>
+			<returntype>boolean</returntype>
+			<parameter>
+				<name>sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>HasDetails</name>
+			<comment>Returns True if details for the given product SKU are available.</comment>
+			<returntype>boolean</returntype>
+			<parameter>
+				<name>sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>ErasePurchase</name>
+			<comment>Removes a purchase locally from the inventory cache.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>GetAllOwnedSkus</name>
+			<comment>Returns a B4A List of all owned product SKUs.</comment>
+			<returntype>anywheresoftware.b4a.objects.collections.List</returntype>
+		</method>
+		<method>
+			<name>GetAllOwnedSkus2</name>
+			<comment>Returns a B4A List of owned product SKUs of a specific type ("inapp" or "subs").
+			</comment>
+			<returntype>anywheresoftware.b4a.objects.collections.List</returntype>
+			<parameter>
+				<name>itemType</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>GetAllPurchases</name>
+			<comment>Returns a B4A List of all owned MyketPurchase objects.</comment>
+			<returntype>anywheresoftware.b4a.objects.collections.List</returntype>
+		</method>
+		<method>
+			<name>GetAllProducts</name>
+			<comment>Returns a B4A List of all queried MyketSkuDetails objects.</comment>
+			<returntype>anywheresoftware.b4a.objects.collections.List</returntype>
+		</method>
+	</class>
+	<class>
+		<name>ir.myket.billingclient.b4a.MyketIabHelper</name>
+		<shortname>MyketIabHelper</shortname>
+		<comment>Android In-App Billing SDK wrapper for Myket App Store.</comment>
+		<objectwrapper>ir.myket.billingclient.IabHelper</objectwrapper>
+		<owner>activity</owner>
+		<event>SetupFinished (Result As MyketIabResult)</event>
+		<event>PurchaseFinished (Result As MyketIabResult, Purchase As MyketPurchase)</event>
+		<event>QueryInventoryFinished (Result As MyketIabResult, Inventory As MyketInventory)</event>
+		<event>ConsumeFinished (Purchase As MyketPurchase, Result As MyketIabResult)</event>
+		<permission>android.permission.INTERNET</permission>
+		<permission>ir.mservices.market.BILLING</permission>
+		<dependsOn>MyketBilling-2.2.aar</dependsOn>
+		<dependsOn>androidx.core:core</dependsOn>
+		<dependsOn>androidx.browser:browser</dependsOn>
+		<dependsOn>org.jetbrains.kotlin-kotlin-stdlib</dependsOn>
+		<dependsOn>org.jetbrains.kotlinx-kotlinx-coroutines-core-jvm</dependsOn>
+		<dependsOn>org.jetbrains.kotlinx-kotlinx-coroutines-android</dependsOn>
+		<dependsOn>okhttp-4.9.0</dependsOn>
+		<dependsOn>okio-2.8.0</dependsOn>
+		<dependsOn>gson-2.8.5</dependsOn>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_OK</name>
+			<comment>Success code (0).</comment>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_USER_CANCELED</name>
+			<comment>User canceled billing flow (1).</comment>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE</name>
+			<comment>Billing unavailable on device (3).</comment>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_ITEM_UNAVAILABLE</name>
+			<comment>Item unavailable for purchase (4).</comment>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_DEVELOPER_ERROR</name>
+			<comment>Developer configuration error (5).</comment>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_ERROR</name>
+			<comment>General billing error (6).</comment>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_ITEM_ALREADY_OWNED</name>
+			<comment>Item already owned (7).</comment>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_ITEM_NOT_OWNED</name>
+			<comment>Item not owned (8).</comment>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_TIMEOUT</name>
+			<comment>Request timed out (9).</comment>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>ITEM_TYPE_INAPP</name>
+			<comment>In-app product type identifier ("inapp").</comment>
+			<returntype>java.lang.String</returntype>
+		</field>
+		<field>
+			<name>ITEM_TYPE_SUBS</name>
+			<comment>Subscription item type identifier ("subs").</comment>
+			<returntype>java.lang.String</returntype>
+		</field>
+		<method>
+			<name>IsInitialized</name>
+			<comment></comment>
+			<returntype>boolean</returntype>
+		</method>
+		<method>
+			<name>Initialize</name>
+			<comment>Initializes MyketIabHelper with the application context and base64 RSA public key. &lt;b&gt;Events:&lt;/b&gt;
+				&lt;code&gt;EventName_SetupFinished (Result As MyketIabResult)&lt;/code&gt; &lt;code&gt;EventName_PurchaseFinished
+				(Result As MyketIabResult, Purchase As MyketPurchase)&lt;/code&gt; &lt;code&gt;EventName_QueryInventoryFinished
+				(Result As MyketIabResult, Inventory As MyketInventory)&lt;/code&gt; &lt;code&gt;EventName_ConsumeFinished
+				(Purchase As MyketPurchase, Result As MyketIabResult)&lt;/code&gt;
+			</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>ba</name>
+				<type>anywheresoftware.b4a.BA</type>
+			</parameter>
+			<parameter>
+				<name>EventName</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>Base64PublicKey</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>EnableDebugLogging</name>
+			<comment>Enables or disables Logcat debug logging.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>enable</name>
+				<type>boolean</type>
+			</parameter>
+		</method>
+		<method>
+			<name>EnableDebugLogging2</name>
+			<comment>Enables or disables Logcat debug logging with a custom tag.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>enable</name>
+				<type>boolean</type>
+			</parameter>
+			<parameter>
+				<name>tag</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>StartSetup</name>
+			<comment>Starts the asynchronous connection setup process with Myket billing service. &lt;b&gt;Event:&lt;/b&gt;
+				&lt;code&gt;EventName_SetupFinished (Result As MyketIabResult)&lt;/code&gt;
+			</comment>
+			<returntype>void</returntype>
+		</method>
+		<method>
+			<name>StartSetup2</name>
+			<comment>Starts the asynchronous connection setup process with a custom event name. &lt;b&gt;Event:&lt;/b&gt;
+				&lt;code&gt;CustomEventName_SetupFinished (Result As MyketIabResult)&lt;/code&gt;
+			</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>customEventName</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<property>
+			<name>SubscriptionsSupported</name>
+			<returntype>boolean</returntype>
+			<comment>Returns True if subscriptions are supported on this device.</comment>
+		</property>
+		<method>
+			<name>LaunchPurchaseFlow</name>
+			<comment>Initiates the UI flow for purchasing an in-app product. &lt;b&gt;Event:&lt;/b&gt; &lt;code&gt;EventName_PurchaseFinished
+				(Result As MyketIabResult, Purchase As MyketPurchase)&lt;/code&gt;
+			</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>Sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>DeveloperPayload</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>LaunchPurchaseFlow2</name>
+			<comment>Initiates the UI flow for purchasing an in-app product without developer payload. &lt;b&gt;Event:&lt;/b&gt;
+				&lt;code&gt;EventName_PurchaseFinished (Result As MyketIabResult, Purchase As MyketPurchase)&lt;/code&gt;
+			</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>Sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>LaunchSubscriptionPurchaseFlow</name>
+			<comment>Initiates the UI flow for subscribing to a product. &lt;b&gt;Event:&lt;/b&gt; &lt;code&gt;EventName_PurchaseFinished
+				(Result As MyketIabResult, Purchase As MyketPurchase)&lt;/code&gt;
+			</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>Sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>DeveloperPayload</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>LaunchSubscriptionPurchaseFlow2</name>
+			<comment>Initiates the UI flow for subscribing to a product without developer payload. &lt;b&gt;Event:&lt;/b&gt;
+				&lt;code&gt;EventName_PurchaseFinished (Result As MyketIabResult, Purchase As MyketPurchase)&lt;/code&gt;
+			</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>Sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>LaunchPurchaseFlowCustom</name>
+			<comment>Initiates the purchase flow with custom event name, item type, and developer payload.
+			</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>customEventName</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>Sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>ItemType</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>DeveloperPayload</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>QueryInventoryAsync</name>
+			<comment>Queries owned items and their details asynchronously. &lt;b&gt;Event:&lt;/b&gt; &lt;code&gt;EventName_QueryInventoryFinished
+				(Result As MyketIabResult, Inventory As MyketInventory)&lt;/code&gt;
+			</comment>
+			<returntype>void</returntype>
+		</method>
+		<method>
+			<name>QueryInventoryAsync2</name>
+			<comment>Queries owned items specifying whether to retrieve catalog details.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>QuerySkuDetails</name>
+				<type>boolean</type>
+			</parameter>
+		</method>
+		<method>
+			<name>QueryInventoryAsync3</name>
+			<comment>Queries owned items and specific product details given as a B4A List.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>QuerySkuDetails</name>
+				<type>boolean</type>
+			</parameter>
+			<parameter>
+				<name>SkuList</name>
+				<type>anywheresoftware.b4a.objects.collections.List</type>
+			</parameter>
+		</method>
+		<method>
+			<name>QueryInventoryAsync4</name>
+			<comment>Queries owned items and specific product details given as an array of String.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>QuerySkuDetails</name>
+				<type>boolean</type>
+			</parameter>
+			<parameter>
+				<name>SkuIds</name>
+				<type>java.lang.String[]</type>
+			</parameter>
+		</method>
+		<method>
+			<name>QueryInventoryAsyncCustom</name>
+			<comment>Queries inventory with a custom event name and optional SKU list.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>customEventName</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>QuerySkuDetails</name>
+				<type>boolean</type>
+			</parameter>
+			<parameter>
+				<name>SkuIds</name>
+				<type>java.lang.Object</type>
+			</parameter>
+		</method>
+		<method>
+			<name>ConsumeAsync</name>
+			<comment>Consumes an owned in-app purchase asynchronously. &lt;b&gt;Event:&lt;/b&gt; &lt;code&gt;EventName_ConsumeFinished
+				(Purchase As MyketPurchase, Result As MyketIabResult)&lt;/code&gt;
+			</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>Purchase</name>
+				<type>ir.myket.billingclient.b4a.MyketPurchase</type>
+			</parameter>
+		</method>
+		<method>
+			<name>ConsumeAsync2</name>
+			<comment>Consumes an owned in-app purchase asynchronously with a custom event name.</comment>
+			<returntype>void</returntype>
+			<parameter>
+				<name>customEventName</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>Purchase</name>
+				<type>ir.myket.billingclient.b4a.MyketPurchase</type>
+			</parameter>
+		</method>
+		<method>
+			<name>Dispose</name>
+			<comment>Disposes of the helper object and disconnects from the billing service.</comment>
+			<returntype>void</returntype>
+		</method>
+		<method>
+			<name>GetResponseDesc</name>
+			<comment>Returns a human-readable description for the given response code.</comment>
+			<returntype>java.lang.String</returntype>
+			<parameter>
+				<name>code</name>
+				<type>int</type>
+			</parameter>
+		</method>
+	</class>
+	<class>
+		<name>ir.myket.billingclient.b4a.MyketBilling</name>
+		<shortname>MyketBilling</shortname>
+		<comment>Android In-App Billing SDK wrapper for Myket App Store (convenience alias for
+			MyketIabHelper).
+		</comment>
+		<objectwrapper>ir.myket.billingclient.IabHelper</objectwrapper>
+		<owner>activity</owner>
+		<event>SetupFinished (Result As MyketIabResult)</event>
+		<event>PurchaseFinished (Result As MyketIabResult, Purchase As MyketPurchase)</event>
+		<event>QueryInventoryFinished (Result As MyketIabResult, Inventory As MyketInventory)</event>
+		<event>ConsumeFinished (Purchase As MyketPurchase, Result As MyketIabResult)</event>
+		<permission>android.permission.INTERNET</permission>
+		<permission>ir.mservices.market.BILLING</permission>
+		<dependsOn>MyketBilling-2.2.aar</dependsOn>
+		<dependsOn>androidx.core:core</dependsOn>
+		<dependsOn>androidx.browser:browser</dependsOn>
+		<dependsOn>org.jetbrains.kotlin-kotlin-stdlib</dependsOn>
+		<dependsOn>org.jetbrains.kotlinx-kotlinx-coroutines-core-jvm</dependsOn>
+		<dependsOn>org.jetbrains.kotlinx-kotlinx-coroutines-android</dependsOn>
+		<dependsOn>okhttp-4.9.0</dependsOn>
+		<dependsOn>okio-2.8.0</dependsOn>
+		<dependsOn>gson-2.8.5</dependsOn>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_OK</name>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_USER_CANCELED</name>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE</name>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_ITEM_UNAVAILABLE</name>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_DEVELOPER_ERROR</name>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_ERROR</name>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_ITEM_ALREADY_OWNED</name>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_ITEM_NOT_OWNED</name>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>BILLING_RESPONSE_RESULT_TIMEOUT</name>
+			<returntype>int</returntype>
+		</field>
+		<field>
+			<name>ITEM_TYPE_INAPP</name>
+			<returntype>java.lang.String</returntype>
+		</field>
+		<field>
+			<name>ITEM_TYPE_SUBS</name>
+			<returntype>java.lang.String</returntype>
+		</field>
+		<method>
+			<name>IsInitialized</name>
+			<comment></comment>
+			<returntype>boolean</returntype>
+		</method>
+		<method>
+			<name>Initialize</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>ba</name>
+				<type>anywheresoftware.b4a.BA</type>
+			</parameter>
+			<parameter>
+				<name>EventName</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>Base64PublicKey</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>EnableDebugLogging</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>enable</name>
+				<type>boolean</type>
+			</parameter>
+		</method>
+		<method>
+			<name>EnableDebugLogging2</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>enable</name>
+				<type>boolean</type>
+			</parameter>
+			<parameter>
+				<name>tag</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>StartSetup</name>
+			<returntype>void</returntype>
+		</method>
+		<method>
+			<name>StartSetup2</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>customEventName</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<property>
+			<name>SubscriptionsSupported</name>
+			<returntype>boolean</returntype>
+		</property>
+		<method>
+			<name>LaunchPurchaseFlow</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>Sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>DeveloperPayload</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>LaunchPurchaseFlow2</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>Sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>LaunchSubscriptionPurchaseFlow</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>Sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>DeveloperPayload</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>LaunchSubscriptionPurchaseFlow2</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>Sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>LaunchPurchaseFlowCustom</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>customEventName</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>Sku</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>ItemType</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>DeveloperPayload</name>
+				<type>java.lang.String</type>
+			</parameter>
+		</method>
+		<method>
+			<name>QueryInventoryAsync</name>
+			<returntype>void</returntype>
+		</method>
+		<method>
+			<name>QueryInventoryAsync2</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>QuerySkuDetails</name>
+				<type>boolean</type>
+			</parameter>
+		</method>
+		<method>
+			<name>QueryInventoryAsync3</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>QuerySkuDetails</name>
+				<type>boolean</type>
+			</parameter>
+			<parameter>
+				<name>SkuList</name>
+				<type>anywheresoftware.b4a.objects.collections.List</type>
+			</parameter>
+		</method>
+		<method>
+			<name>QueryInventoryAsync4</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>QuerySkuDetails</name>
+				<type>boolean</type>
+			</parameter>
+			<parameter>
+				<name>SkuIds</name>
+				<type>java.lang.String[]</type>
+			</parameter>
+		</method>
+		<method>
+			<name>QueryInventoryAsyncCustom</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>customEventName</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>QuerySkuDetails</name>
+				<type>boolean</type>
+			</parameter>
+			<parameter>
+				<name>SkuIds</name>
+				<type>java.lang.Object</type>
+			</parameter>
+		</method>
+		<method>
+			<name>ConsumeAsync</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>Purchase</name>
+				<type>ir.myket.billingclient.b4a.MyketPurchase</type>
+			</parameter>
+		</method>
+		<method>
+			<name>ConsumeAsync2</name>
+			<returntype>void</returntype>
+			<parameter>
+				<name>customEventName</name>
+				<type>java.lang.String</type>
+			</parameter>
+			<parameter>
+				<name>Purchase</name>
+				<type>ir.myket.billingclient.b4a.MyketPurchase</type>
+			</parameter>
+		</method>
+		<method>
+			<name>Dispose</name>
+			<returntype>void</returntype>
+		</method>
+		<method>
+			<name>GetResponseDesc</name>
+			<returntype>java.lang.String</returntype>
+			<parameter>
+				<name>code</name>
+				<type>int</type>
+			</parameter>
+		</method>
+	</class>
+</root>
