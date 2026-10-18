@@ -146,41 +146,41 @@ Private Sub BuildUserInterface
 	imgTitle.Initialize("")
 	imgTitle.Bitmap = LoadBitmap(File.DirAssets, "title.png")
 	imgTitle.Gravity = Gravity.FILL
-	Activity.AddView(imgTitle, (100%x - 260dip) / 2, 20dip, 260dip, 50dip)
+	Activity.AddView(imgTitle, (100%x - 260dip) / 2, 50dip, 260dip, 50dip)
 	
 	' Car image (free blue car or premium red car)
 	imgCar.Initialize("")
 	imgCar.Bitmap = LoadBitmap(File.DirAssets, "free.png")
 	imgCar.Gravity = Gravity.FILL
-	Activity.AddView(imgCar, (100%x - 130dip) / 2, 85dip, 130dip, 75dip)
+	Activity.AddView(imgCar, (100%x - 130dip) / 2, 115dip, 130dip, 75dip)
 	
 	' Gas gauge
 	imgGasGauge.Initialize("")
 	imgGasGauge.Bitmap = LoadBitmap(File.DirAssets, "gas2.png")
 	imgGasGauge.Gravity = Gravity.FILL
-	Activity.AddView(imgGasGauge, (100%x - 140dip) / 2, 175dip, 140dip, 65dip)
+	Activity.AddView(imgGasGauge, (100%x - 140dip) / 2, 205dip, 140dip, 65dip)
 	
 	' Action buttons row (Drive, Buy Gas)
 	btnDrive.Initialize("btnDrive")
 	btnDrive.Bitmap = LoadBitmap(File.DirAssets, "drive.png")
 	btnDrive.Gravity = Gravity.FILL
-	Activity.AddView(btnDrive, 50%x - 135dip, 255dip, 125dip, 46dip)
+	Activity.AddView(btnDrive, 50%x - 135dip, 285dip, 125dip, 46dip)
 	
 	btnBuyGas.Initialize("btnBuyGas")
 	btnBuyGas.Bitmap = LoadBitmap(File.DirAssets, "buy_gas.png")
 	btnBuyGas.Gravity = Gravity.FILL
-	Activity.AddView(btnBuyGas, 50%x + 10dip, 255dip, 125dip, 46dip)
+	Activity.AddView(btnBuyGas, 50%x + 10dip, 285dip, 125dip, 46dip)
 	
 	' Upgrade buttons row (Upgrade to Premium, Infinite Gas)
 	btnUpgrade.Initialize("btnUpgrade")
 	btnUpgrade.Bitmap = LoadBitmap(File.DirAssets, "upgrade_app.png")
 	btnUpgrade.Gravity = Gravity.FILL
-	Activity.AddView(btnUpgrade, 50%x - 135dip, 315dip, 125dip, 46dip)
+	Activity.AddView(btnUpgrade, 50%x - 135dip, 345dip, 125dip, 46dip)
 	
 	btnInfiniteGas.Initialize("btnInfiniteGas")
 	btnInfiniteGas.Bitmap = LoadBitmap(File.DirAssets, "infinite_gas.png")
 	btnInfiniteGas.Gravity = Gravity.FILL
-	Activity.AddView(btnInfiniteGas, 50%x + 10dip, 315dip, 125dip, 46dip)
+	Activity.AddView(btnInfiniteGas, 50%x + 10dip, 345dip, 125dip, 46dip)
 	
 	' Status Label
 	lblStatus.Initialize("")
@@ -188,7 +188,7 @@ Private Sub BuildUserInterface
 	lblStatus.TextSize = 13
 	lblStatus.Gravity = Gravity.CENTER_HORIZONTAL
 	lblStatus.Text = "Status: Initializing..."
-	Activity.AddView(lblStatus, 5%x, 375dip, 90%x, 60dip)
+	Activity.AddView(lblStatus, 5%x, 405dip, 90%x, 60dip)
 	
 	' Wait Overlay Screen
 	pnlWait.Initialize("")
@@ -199,7 +199,7 @@ Private Sub BuildUserInterface
 	imgWait.Initialize("")
 	imgWait.Bitmap = LoadBitmap(File.DirAssets, "wait.png")
 	imgWait.Gravity = Gravity.FILL
-	pnlWait.AddView(imgWait, (100%x - 100dip) / 2, (100%y - 100dip) / 2 - 20dip, 100dip, 100dip)
+	pnlWait.AddView(imgWait, (100%x - 100dip) / 2, (100%y - 100dip) / 2 - 50dip, 100dip, 100dip)
 	
 	lblWaitMsg.Initialize("")
 	lblWaitMsg.TextColor = Colors.RGB(30, 30, 30)
